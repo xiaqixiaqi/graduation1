@@ -31,6 +31,7 @@ public class StudentService {
         Date date = fmt.parse(birth);
         student.setBirth(date);
         student.setNativePlace(nativePlace);
+        student.setPassword("888888");
         studentRepository.save(student);
         return true;
     }
