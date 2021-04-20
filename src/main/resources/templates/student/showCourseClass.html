@@ -39,6 +39,8 @@
 			<div class="sidebar-menu-inner">	
 				
 				<header class="logo-env">
+					
+								
 				</header>
 				<ul id="main-menu" class="main-menu">
 					<li>
@@ -101,16 +103,18 @@
 						<table class="table">
 							<thead>
 								<tr>
-									<th width="30%">课程名称</th>
-									<th>分数</th>
-									<th>详情</th>
+									<th>课程名称</th>
+									<th>授课老师</th>
+									<th>上课时间</th>
+									<th>操作</th>
 								</tr>
 							</thead>
 							<tbody th:if="${scores!=null}">
 								
 								<tr th:each="score,scoreStat:${scores}">
 									<td class="middle-align">[[${score.courseClass.course.courseName}]]</td>
-									<td class="middle-align">[[${score.scoreValue}]]</td>
+									<td class="middle-align">[[${score.courseClass.teacher.name}]]</td>
+									<td class="middle-align">[[${score.courseClass.classTime}]]</td>
 									<td>
 										<a href="javascript:;" th:onclick="jQuery('#modal-[[${scoreStat.index}]]').modal('show')" class="btn btn-primary btn-single btn-sm">详情</a>
 									</td>
@@ -123,20 +127,20 @@
 			</div>
 			
 			
-			<script type="text/javascript">
-			function showAjaxModal()
-			{
-				jQuery('#modal-7').modal('show', {backdrop: 'static'});
-				
-				jQuery.ajax({
-					url: "data/ajax-content.txt",
-					success: function(response)
-					{
-						jQuery('#modal-7 .modal-body').html(response);
-					}
-				});
-			}
-			</script>
+			<!--<script type="text/javascript">-->
+			<!--function showAjaxModal()-->
+			<!--{-->
+				<!--jQuery('#modal-7').modal('show', {backdrop: 'static'});-->
+				<!---->
+				<!--jQuery.ajax({-->
+					<!--url: "data/ajax-content.txt",-->
+					<!--success: function(response)-->
+					<!--{-->
+						<!--jQuery('#modal-7 .modal-body').html(response);-->
+					<!--}-->
+				<!--});-->
+			<!--}-->
+			<!--</script>-->
 			<footer class="main-footer sticky footer-type-1">
 			</footer>
 		</div>
@@ -157,27 +161,35 @@
 				</div>
 
 				<div class="modal-body">
-					<font color="red">该总成绩按照预习成绩占30%，操作成绩占30%，实验报告成绩占40%计算</font>
-				<table class="table table-striped table-bordered">
-					<thead>
-					<tr>
-						<th>实验名称</th>
-						<th>预习成绩</th>
-						<th>操作成绩</th>
-						<th>实验报告成绩</th>
-						<th>总成绩</th>
-					</tr>
-					</thead>
-					<tbody th:if="${score.scoreItems!=null}">
-					<tr th:each="scoreItem:${score.scoreItems}">
-						<td th:utext="${scoreItem.experimentName}"></td>
-						<td th:utext="${scoreItem.previewScore}"></td>
-						<td th:utext="${scoreItem.operatingScore}"></td>
-						<td th:utext="${scoreItem.reportScore}"></td>
-						<td th:utext="${scoreItem.totalScore}"></td>
-					</tr>
-					</tbody>
-				</table>
+					<p>课程代码：[[${score.courseClass.course.courseCode}]]</p>
+					<p>课程内容：[[${score.courseClass.course.content}]]</p>
+					<p>学  分：[[${score.courseClass.course.credits}]]</p>
+					<p>授课老师：[[${score.courseClass.teacher.name}]]</p>
+					<p>上课时间：[[${score.courseClass.classTime}]]</p>
+					<p>老师联系方式：[[${score.courseClass.teacher.phone}]]</p>
+					<p>老师介绍：[[${score.courseClass.teacher.introduction}]]</p>
+
+					<!--<font color="red">该总成绩按照预习成绩占30%，操作成绩占30%，实验报告成绩占40%计算</font>-->
+				<!--<table class="table table-striped table-bordered">-->
+					<!--<thead>-->
+					<!--<tr>-->
+						<!--<th></th>-->
+						<!--<th>预习成绩</th>-->
+						<!--<th>操作成绩</th>-->
+						<!--<th>实验报告成绩</th>-->
+						<!--<th>总成绩</th>-->
+					<!--</tr>-->
+					<!--</thead>-->
+					<!--<tbody th:if="${score.scoreItems!=null}">-->
+					<!--<tr th:each="scoreItem:${score.scoreItems}">-->
+						<!--<td th:utext="${scoreItem.experimentName}"></td>-->
+						<!--<td th:utext="${scoreItem.previewScore}"></td>-->
+						<!--<td th:utext="${scoreItem.operatingScore}"></td>-->
+						<!--<td th:utext="${scoreItem.reportScore}"></td>-->
+						<!--<td th:utext="${scoreItem.totalScore}"></td>-->
+					<!--</tr>-->
+					<!--</tbody>-->
+				<!--</table>-->
 
 
 				</div>

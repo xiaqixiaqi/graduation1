@@ -30,4 +30,12 @@ public class TeacherController {
         modelAndView.addObject("teachers",teacherService.findAllTeacher());
         return modelAndView;
     }
+    //查看老师信息
+    @RequestMapping(value = "/student/allTeacher")
+    public ModelAndView showAllTeacherByStudent(){
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("/student/showAllTeacherInStudent.html");
+        modelAndView.addObject("teachers",teacherService.findAllTeacher());
+        return modelAndView;
+    }
 }

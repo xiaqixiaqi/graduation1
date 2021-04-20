@@ -86,4 +86,12 @@ public class CourseClassController {
         modelAndView.addObject("courseClass",courseClassService.findCourseClassByCcId(ccId));
         return modelAndView;
     }
+    //学生端查询课程班级的信息
+    @RequestMapping(value = "/student/showAllCourseClass")
+    public ModelAndView researcheCourseClass(HttpSession session){
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("/student/showCourseClass.html");
+        modelAndView.addObject("scores",courseClassService.findAllCourseClass((Integer) session.getAttribute("sId")));
+        return modelAndView;
+    }
 }

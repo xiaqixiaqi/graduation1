@@ -31,118 +31,7 @@
 </head>
 <body class="page-body">
 
-	<div class="settings-pane">
-			
-		<a href="#" data-toggle="settings-pane" data-animate="true">
-			&times;
-		</a>
-		
-		<div class="settings-pane-inner">
 
-			<div class="row">
-
-				<div class="col-md-4">
-
-					<div class="user-info">
-
-						<div class="user-image">
-							<a href="extra-profile.html">
-								<img src="assets/images/user-2.png" class="img-responsive img-circle" />
-							</a>
-						</div>
-
-						<div class="user-details">
-
-							<h3>
-								<a href="extra-profile.html">John Smith</a>
-
-								<!-- Available statuses: is-online, is-idle, is-busy and is-offline -->
-								<span class="user-status is-online"></span>
-							</h3>
-
-							<p class="user-title">Web Developer</p>
-
-							<div class="user-links">
-								<a href="extra-profile.html" class="btn btn-primary">Edit Profile</a>
-								<a href="extra-profile.html" class="btn btn-success">Upgrade</a>
-							</div>
-
-						</div>
-
-					</div>
-
-				</div>
-
-				<div class="col-md-8 link-blocks-env">
-
-					<div class="links-block left-sep">
-						<h4>
-							<span>Notifications</span>
-						</h4>
-
-						<ul class="list-unstyled">
-							<li>
-								<input type="checkbox" class="cbr cbr-primary" checked="checked" id="sp-chk1" />
-								<label for="sp-chk1">Messages</label>
-							</li>
-							<li>
-								<input type="checkbox" class="cbr cbr-primary" checked="checked" id="sp-chk2" />
-								<label for="sp-chk2">Events</label>
-							</li>
-							<li>
-								<input type="checkbox" class="cbr cbr-primary" checked="checked" id="sp-chk3" />
-								<label for="sp-chk3">Updates</label>
-							</li>
-							<li>
-								<input type="checkbox" class="cbr cbr-primary" checked="checked" id="sp-chk4" />
-								<label for="sp-chk4">Server Uptime</label>
-							</li>
-						</ul>
-					</div>
-
-					<div class="links-block left-sep">
-						<h4>
-							<a href="#">
-								<span>Help Desk</span>
-							</a>
-						</h4>
-
-						<ul class="list-unstyled">
-							<li>
-								<a href="#">
-									<i class="fa-angle-right"></i>
-									Support Center
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									<i class="fa-angle-right"></i>
-									Submit a Ticket
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									<i class="fa-angle-right"></i>
-									Domains Protocol
-								</a>
-							</li>
-							<li>
-								<a href="#">
-									<i class="fa-angle-right"></i>
-									Terms of Service
-								</a>
-							</li>
-						</ul>
-					</div>
-
-				</div>
-
-			</div>
-
-		</div>
-
-	</div>
-	
 	<div class="page-container">
 		<div class="sidebar-menu toggle-others fixed">
 			
@@ -150,16 +39,7 @@
 				
 				<header class="logo-env">
 					
-					<!-- logo -->
-					<!--<div class="logo">-->
-						<!--<a href="dashboard-1.html" class="logo-expanded">-->
-							<!--<img src="assets/images/logo@2x.png" width="80" alt="" />-->
-						<!--</a>-->
-						<!---->
-						<!--<a href="dashboard-1.html" class="logo-collapsed">-->
-							<!--<img src="assets/images/logo-collapsed@2x.png" width="40" alt="" />-->
-						<!--</a>-->
-					<!--</div>-->
+
 					
 					<!-- This will toggle the mobile menu and will be visible only on mobile devices -->
 					<div class="mobile-menu-toggle visible-xs">
@@ -169,14 +49,7 @@
 							<i class="fa-bars"></i>
 						</a>
 					</div>
-					
-					<!-- This will open the popup with user profile settings, you can use for any purpose, just be creative -->
-					<div class="settings-icon">
-						<a href="#" data-toggle="settings-pane" data-animate="true">
-							<i class="linecons-cog"></i>
-						</a>
-					</div>
-					
+
 								
 				</header>
 
@@ -189,12 +62,12 @@
 							<span class="title">学生基本资料管理</span>
 						</a>
 						<ul>
-							<li>
+							<li th:if="${session.tId==1}">
 								<a href="/teacher/addStudent">
 									<span class="title">添加学生</span>
 								</a>
 							</li>
-							<li>
+							<li th:if="${session.tId==1}">
 								<a href="/teacher/researchStudent">
 									<span class="title">修改学生信息</span>
 								</a>
@@ -245,17 +118,17 @@
 									<span class="title">班级管理</span>
 								</a>
 							</li>
-							<li>
+							<li th:if="${session.getAttribute('tId')==1}">
 								<a href="/teacher/addCourseClass">
 									<span class="title">添加班级</span>
 								</a>
 							</li>
-							<li>
+							<li th:if="${session.tId==1}">
 								<a href="/teacher/addTeacher">
 									<span class="title">添加老师</span>
 								</a>
 							</li>
-							<li>
+							<li th:if="${session.tId==1}">
 								<a href="/teacher/addCourse">
 									<span class="title">添加课程</span>
 								</a>
@@ -263,6 +136,16 @@
 							<li>
 								<a href="/teacher/showAllTeacher">
 									<span class="title">查看所有老师</span>
+								</a>
+							</li>
+							<li th:if="${session.tId==1}">
+								<a href="/teacher/addProfession">
+									<span class="title">添加专业</span>
+								</a>
+							</li>
+							<li th:if="${session.tId==1}">
+								<a href="/teacher/showAllProfession">
+									<span class="title">查看所有专业</span>
 								</a>
 							</li>
 						</ul>
@@ -289,6 +172,7 @@
 						</form>
 					</li>
 				</ul>
+                <center><h3>学生实验成绩管理系统</h3></center>
 			</nav>
 
 				<!-- Basic Setup -->

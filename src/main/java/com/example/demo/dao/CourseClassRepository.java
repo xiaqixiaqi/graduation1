@@ -13,4 +13,5 @@ public interface CourseClassRepository extends CrudRepository<CourseClass,Intege
     CourseClass findCourseClassByCcNumber(String ccNumber);
     @Query("select s from CourseClass s where s.teacher.tId=?1")
     List<CourseClass> findCoursesClassByTId(int tId);
+
 }
