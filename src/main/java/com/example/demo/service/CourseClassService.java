@@ -37,6 +37,10 @@ public class CourseClassService {
         return courseClassRepository.findById(ccId).get().getScores();
 
     }
+    public List<CourseClass> findAllCourseClass(){
+        return (List<CourseClass>) courseClassRepository.findAll();
+
+    }
     //通过课程id查询该老师的课程信息
     public CourseClass findCourseClassByCcId(int ccId){
         return courseClassRepository.findById(ccId).get();

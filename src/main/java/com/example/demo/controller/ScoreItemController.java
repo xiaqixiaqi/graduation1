@@ -63,12 +63,17 @@ public class ScoreItemController {
     }
     //获取某班的所有实验成绩;搜索后
     @RequestMapping(value = "/teacher/showScoreItemByCcNumber")
-    public ModelAndView findScoreItemsByCcNumberGroup(@RequestParam("ccId")int ccId){
+    public ModelAndView findScoreItemsByCcNumberGroup(@RequestParam("ccId")int ccId,HttpSession session){
         System.out.println(ccId);
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/teacher/showScoreByCourseClass.html");
         modelAndView.addObject("allScoreItems",scoreItemService.findScoreItemsByCcIdGroup(ccId));
-        modelAndView.addObject("courseClasses",courseClassService.findAllCourseClassByTId(1));
+        if ((Integer) session.getAttribute("tId")==1){
+            modelAndView.addObject("courseClasses",courseClassService.findAllCourseClass());
+        }
+        else{
+            modelAndView.addObject("courseClasses",courseClassService.findAllCourseClassByTId((Integer) session.getAttribute("tId")));
+        }
         return modelAndView;
 
     }
@@ -77,7 +82,12 @@ public class ScoreItemController {
     public ModelAndView findScoreItemsByCcNumber(HttpSession session){
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/teacher/showScoreByCourseClass.html");
-        modelAndView.addObject("courseClasses",courseClassService.findAllCourseClassByTId((Integer) session.getAttribute("tId")));
+        int tId=(Integer) session.getAttribute("tId");
+        if (tId==1){
+            modelAndView.addObject("courseClasses",courseClassService.findAllCourseClass());
+        }
+        else
+        modelAndView.addObject("courseClasses",courseClassService.findAllCourseClassByTId(tId));
         return modelAndView;
 
     }
