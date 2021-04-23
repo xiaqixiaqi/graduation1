@@ -25,6 +25,7 @@ public class TeacherService {
         teacher.setBirth(date);
         teacher.setPhone(phone);
         teacher.setIntroduction(introduction);
+        teacher.setPassword("888888");
         teacherRepository.save(teacher);
         return true;
     }
