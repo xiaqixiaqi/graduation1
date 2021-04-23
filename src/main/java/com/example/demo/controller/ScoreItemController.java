@@ -35,7 +35,12 @@ public class ScoreItemController {
     public ModelAndView addStudentScore(HttpSession session){
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/teacher/addStudentScore.html");
-        modelAndView.addObject("courseClasses",courseClassService.findAllCourseClassByTId((Integer) session.getAttribute("tId")));
+        int tId=(Integer) session.getAttribute("tId");
+        if (tId==1){
+            modelAndView.addObject("courseClasses",courseClassService.findAllCourseClass());
+       }
+        else
+            modelAndView.addObject("courseClasses",courseClassService.findAllCourseClassByTId(tId));
         return modelAndView;
     }
     @RequestMapping(value = "/teacher/addStudentScoreItem",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

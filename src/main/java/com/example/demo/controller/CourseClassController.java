@@ -46,17 +46,29 @@ public class CourseClassController {
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/teacher/addStudentScoreManual.html");
         //需要修改，老师id，老师的所有课程班级
-        modelAndView.addObject("courseClasses",courseClassService.findAllCourseClassByTId((Integer) session.getAttribute("tId")));
+        int tId=(Integer) session.getAttribute("tId");
+        if (tId==1){
+            modelAndView.addObject("courseClasses",courseClassService.findAllCourseClass());
+        }
+        else
+            modelAndView.addObject("courseClasses",courseClassService.findAllCourseClassByTId(tId));
         return modelAndView;
+
     }
     //老师手动添加学生实验成绩（选择班级后）
     @RequestMapping(value = "/teacher/addScoreManualByClass")
     public ModelAndView addScoreManualByClass(@RequestParam("ccId")int ccId,HttpSession session){
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/teacher/addStudentScoreManual.html");
-        //老师的所有课程班级
-        modelAndView.addObject("courseClasses",courseClassService.findAllCourseClassByTId((Integer) session.getAttribute("tId")));
         modelAndView.addObject("scores",courseClassService.findScoresByCourseClass(ccId));
+        //老师的所有课程班级
+        int tId=(Integer) session.getAttribute("tId");
+        if (tId==1){
+            modelAndView.addObject("courseClasses",courseClassService.findAllCourseClass());
+        }
+        else
+            modelAndView.addObject("courseClasses",courseClassService.findAllCourseClassByTId(tId));
+
         return modelAndView;
     }
     //老师手动添加学生实验成绩（选择班级后）
