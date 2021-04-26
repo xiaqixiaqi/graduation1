@@ -75,8 +75,8 @@ public class CourseClassController {
     @RequestMapping(value = "/teacher/addingScoreManualByClass")
     public String addingScoreManualByClass(@RequestParam("experimentName")String experimentName, @RequestParam("ccNumber")String ccNumber,@RequestParam("date")String date, @RequestParam("scoreId")int[] scoreId,
                                            @RequestParam("previewScore")float[] previewScore, @RequestParam("operatingScore")float[] operatingScore,
-                                           @RequestParam("reportScore")float[] reportScore, RedirectAttributes attributes) throws ParseException {
-        scoreItemService.addScoreItem( experimentName, date,scoreId, previewScore,operatingScore, reportScore) ;
+                                           @RequestParam("reportScore")float[] reportScore,@RequestParam("remark")String[] remark, RedirectAttributes attributes) throws ParseException {
+        scoreItemService.addScoreItem( experimentName, date,scoreId, previewScore,operatingScore, reportScore,remark) ;
         attributes.addAttribute("experienceName",experimentName);
         attributes.addAttribute("ccNumber",ccNumber);
         return "redirect:/teacher/findStudentScoreItemByName";

@@ -44,26 +44,26 @@ public class ScoreItemController {
         return modelAndView;
     }
     @RequestMapping(value = "/teacher/addStudentScoreItem",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String uploadScoreItem(@RequestPart(value = "file")MultipartFile file, @RequestParam(value = "ccNumber") String ccNumber,
+    public String uploadScoreItem(@RequestPart(value = "file")MultipartFile file, @RequestParam(value = "ccId") int ccId,
                                   @RequestParam(value = "date") String date, @RequestParam(value = "experienceName") String experienceName,
                                   RedirectAttributes attributes) throws IOException, ParseException {
-        System.out.println(file.getOriginalFilename()+","+ccNumber+","+date+","+experienceName);
+        System.out.println(file.getOriginalFilename()+","+ccId+","+date+","+experienceName);
        // SimpleDateFormat formatter = new SimpleDateFormat( "yyyy-MM-dd ", Locale.ENGLISH);
         DateFormat fmt =new SimpleDateFormat("yyyy-MM-dd");
         Date date1 = fmt.parse(date);
        // System.out.println(file.);
-        EasyExcel.read(file.getInputStream(), ScoreItemData.class,new DemoDataListener(scoreItemService,ccNumber,date1,experienceName)).sheet().headRowNumber(2).doRead();
-        attributes.addAttribute("ccNumber",ccNumber);
+        EasyExcel.read(file.getInputStream(), ScoreItemData.class,new DemoDataListener(scoreItemService,ccId,date1,experienceName)).sheet().headRowNumber(2).doRead();
+        attributes.addAttribute("ccId",ccId);
         attributes.addAttribute("experienceName",experienceName);
         return "redirect:/teacher/findStudentScoreItemByName";
     }
     //获取某次实验的学生成绩
     @RequestMapping(value = "/teacher/findStudentScoreItemByName")
-    public ModelAndView findScoreByName(@RequestParam("ccNumber")String ccNumber, @RequestParam("experienceName")String experienceName){
+    public ModelAndView findScoreByName(@RequestParam("ccId")int ccId, @RequestParam("experienceName")String experienceName){
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("/teacher/showScoreByLabName.html");
-        modelAndView.addObject("title",ccNumber+"  "+experienceName);
-        modelAndView.addObject("scoreItems",scoreItemService.findScoreItemsByCcNumberAndExperienceName(ccNumber,experienceName));
+        modelAndView.addObject("title",ccId+"  "+experienceName);
+        modelAndView.addObject("scoreItems",scoreItemService.findScoreItemsByCcIdAndExperienceName(ccId,experienceName));
         return modelAndView;
     }
     //获取某班的所有实验成绩;搜索后

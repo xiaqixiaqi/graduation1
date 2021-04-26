@@ -19,6 +19,7 @@ public class ScoreItem {
     private float operatingScore;//操作成绩
     private float reportScore;//实验报告成绩;
     private float totalScore;//总成绩
+    private String remark;//备注
 
 
     public int getScoreItemId() {
@@ -87,5 +88,13 @@ public class ScoreItem {
 
     public void setTotalScore(float totalScore) {
         this.totalScore = totalScore;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

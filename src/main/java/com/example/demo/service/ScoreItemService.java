@@ -23,13 +23,14 @@ public class ScoreItemService {
     private CourseClassRepository courseClassRepository;
     @Resource
     private StudentRepository studentRepository;
-    //ccNumber课程班级编号
-    public boolean saveScoreItems(List<ScoreItemData> scoreItemData, String ccNumber, Date date,String experienceName){
+    //ccId课程班级id
+    public boolean saveScoreItems(List<ScoreItemData> scoreItemData, int ccId, Date date,String experienceName){
         for (ScoreItemData scoreData:scoreItemData) {
-            Score score=scoreRepository.findScoreByStudentIDAndCcNumber(scoreData.getStudentId(),ccNumber);
+           // Score score=scoreRepository.findScoreByStudentIDAndCcNumber(scoreData.getStudentId(),ccNumber);
+            Score score=scoreRepository.findScoreByStudentIDAndCcNumber(scoreData.getStudentId(),ccId);
             if (score==null){
                 score=new Score();
-                score.setCourseClass(courseClassRepository.findCourseClassByCcNumber(ccNumber));
+                score.setCourseClass(courseClassRepository.findById(ccId).get());
                 score.setStudent(studentRepository.findStudentByStudentID(scoreData.getStudentId()));
             }
             ScoreItem scoreItem=new ScoreItem();
@@ -67,10 +68,10 @@ public class ScoreItemService {
         return true;
     }
     //教师查询某次学生实验成绩
-    public List<ScoreItem> findScoreItemsByCcNumberAndExperienceName(String ccNumber,String experienceName){
-        return scoreItemRepository.findScoreItemsByCcNumberAndExperienceName(ccNumber,experienceName);
+    public List<ScoreItem> findScoreItemsByCcIdAndExperienceName(int ccId,String experienceName){
+        return scoreItemRepository.findScoreItemsByCcIdAndExperienceName(ccId,experienceName);
     }
-    public boolean addScoreItem(String experimentName,String date,int[] scoreId,float[] previewScore,float[] operatingScore,float[] reportScore) throws ParseException {
+    public boolean addScoreItem(String experimentName,String date,int[] scoreId,float[] previewScore,float[] operatingScore,float[] reportScore,String[] remark) throws ParseException {
         DateFormat fmt =new SimpleDateFormat("yyyy-MM-dd");
         Date date1 = fmt.parse(date);
         //遍历这门课这个实验每个学生的成绩
@@ -82,6 +83,7 @@ public class ScoreItemService {
             scoreItem.setPreviewScore(previewScore[i]);
             scoreItem.setExperimentName(experimentName);
             scoreItem.setOperatingScore(operatingScore[i]);
+            scoreItem.setRemark(remark[i]);
             //记录这次实验的总成绩
             float totalScore= (float) (reportScore[i]*0.4+previewScore[i]*0.3+operatingScore[i]*0.3);
             scoreItem.setTotalScore(totalScore);
@@ -110,7 +112,7 @@ public class ScoreItemService {
         Map<String,List<ScoreItem>> scoreMap=new HashMap();
         List<String> experimentName=scoreItemRepository.findExperimentNameByCcNumberGroup(ccId);
         for (String name:experimentName) {
-            List<ScoreItem> scoreItems=scoreItemRepository.findScoreItemsByCcNumberAndExperimentName(ccId,name);
+            List<ScoreItem> scoreItems=scoreItemRepository.findScoreItemsByCcIdAndExperienceName(ccId,name);
             scoreMap.put(name,scoreItems);
         }
         return scoreMap;

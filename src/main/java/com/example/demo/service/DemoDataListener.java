@@ -24,7 +24,7 @@ public class DemoDataListener extends AnalysisEventListener<ScoreItemData> {
 
 
     private ScoreItemService scoreItemService;
-    private  String ccNumber;
+    private  int ccId;
     private Date date;
     private String experienceName;
     List<ScoreItemData> list = new ArrayList<ScoreItemData>();
@@ -37,9 +37,9 @@ public class DemoDataListener extends AnalysisEventListener<ScoreItemData> {
      *
      * @param demoDAO
      */
-    public DemoDataListener(ScoreItemService scoreItemService, String ccNumber, Date date, String experienceName) {
+    public DemoDataListener(ScoreItemService scoreItemService, int ccId, Date date, String experienceName) {
         this.scoreItemService = scoreItemService;
-        this.ccNumber=ccNumber;
+        this.ccId=ccId;
         this.date=date;
         this.experienceName=experienceName;
     }
@@ -71,7 +71,7 @@ public class DemoDataListener extends AnalysisEventListener<ScoreItemData> {
      */
     private void saveData() {
         LOGGER.info("{}条数据，开始存储数据库！", list.size());
-        scoreItemService.saveScoreItems(list,ccNumber,date,experienceName);
+        scoreItemService.saveScoreItems(list,ccId,date,experienceName);
         LOGGER.info("存储数据库成功！");
     }
 }
