@@ -2,10 +2,12 @@ package com.example.demo.service;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.fastjson.JSON;
+import com.example.demo.Data.MessageData;
 import com.example.demo.Data.ScoreItemData;
 import com.example.demo.service.ScoreItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.plugin2.message.Message;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,6 +29,7 @@ public class DemoDataListener extends AnalysisEventListener<ScoreItemData> {
     private  int ccId;
     private Date date;
     private String experienceName;
+    private MessageData messageData;
     List<ScoreItemData> list = new ArrayList<ScoreItemData>();
 //    public DemoDataListener() {
 //        // 这里是demo，所以随便new一个。实际使用如果到了spring,请使用下面的有参构造函数
@@ -37,11 +40,12 @@ public class DemoDataListener extends AnalysisEventListener<ScoreItemData> {
      *
      * @param demoDAO
      */
-    public DemoDataListener(ScoreItemService scoreItemService, int ccId, Date date, String experienceName) {
+    public DemoDataListener(ScoreItemService scoreItemService, int ccId, Date date, String experienceName, MessageData messageData) {
         this.scoreItemService = scoreItemService;
         this.ccId=ccId;
         this.date=date;
         this.experienceName=experienceName;
+        this.messageData=messageData;
     }
 
     @Override
@@ -51,6 +55,7 @@ public class DemoDataListener extends AnalysisEventListener<ScoreItemData> {
         // 达到BATCH_COUNT了，需要去存储一次数据库，防止数据几万条数据在内存，容易OOM
         if (list.size() >= BATCH_COUNT) {
             saveData();
+           // messageData.setMsg("完成啦--------------");
             // 存储完成清理 list
             list.clear();
         }
@@ -65,13 +70,14 @@ public class DemoDataListener extends AnalysisEventListener<ScoreItemData> {
         // 这里也要保存数据，确保最后遗留的数据也存储到数据库
         saveData();
         LOGGER.info("所有数据解析完成！");
+       // messageData.setMsg("完成啦--------------");
     }
     /**
      * 加上存储数据库
      */
     private void saveData() {
         LOGGER.info("{}条数据，开始存储数据库！", list.size());
-        scoreItemService.saveScoreItems(list,ccId,date,experienceName);
+        messageData.setMsg(scoreItemService.saveScoreItems(list,ccId,date,experienceName));
         LOGGER.info("存储数据库成功！");
     }
 }

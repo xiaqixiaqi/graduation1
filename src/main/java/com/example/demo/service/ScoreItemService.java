@@ -24,48 +24,51 @@ public class ScoreItemService {
     @Resource
     private StudentRepository studentRepository;
     //ccId课程班级id
-    public boolean saveScoreItems(List<ScoreItemData> scoreItemData, int ccId, Date date,String experienceName){
+    public String saveScoreItems(List<ScoreItemData> scoreItemData, int ccId, Date date,String experienceName){
+        String message="这些学号的学生系统班级不存在：";//用于存储不存在的学生
         for (ScoreItemData scoreData:scoreItemData) {
            // Score score=scoreRepository.findScoreByStudentIDAndCcNumber(scoreData.getStudentId(),ccNumber);
             Score score=scoreRepository.findScoreByStudentIDAndCcNumber(scoreData.getStudentId(),ccId);
             if (score==null){
+                message+=scoreData.getStudentId()+",";
                 score=new Score();
                 score.setCourseClass(courseClassRepository.findById(ccId).get());
                 score.setStudent(studentRepository.findStudentByStudentID(scoreData.getStudentId()));
-            }
-            ScoreItem scoreItem=new ScoreItem();
-            scoreItem.setDate(date);
-            scoreItem.setOperatingScore(scoreData.getOperatingScore());
-            scoreItem.setExperimentName(experienceName);
-            scoreItem.setPreviewScore(scoreData.getPreviewScore());
-            scoreItem.setReportScore(scoreData.getReportScore());
-            //记录这次实验的总成绩
-            scoreItem.setTotalScore((float) (scoreData.getOperatingScore()*0.3+scoreData.getPreviewScore()*0.3+scoreData.getReportScore()*0.4));
-            scoreItem.setScore(score);
-            scoreItemRepository.save(scoreItem);
-            if (score.getScoreItems()== null){
-                List<ScoreItem> items = new ArrayList<>();
-                items.add(scoreItem);
-                score.setScoreItems(items);
             }else {
-                score.getScoreItems().add(scoreItem);
+                ScoreItem scoreItem = new ScoreItem();
+                scoreItem.setDate(date);
+                scoreItem.setOperatingScore(scoreData.getOperatingScore());
+                scoreItem.setExperimentName(experienceName);
+                scoreItem.setPreviewScore(scoreData.getPreviewScore());
+                scoreItem.setReportScore(scoreData.getReportScore());
+                //记录这次实验的总成绩
+                scoreItem.setTotalScore((float) (scoreData.getOperatingScore() * 0.3 + scoreData.getPreviewScore() * 0.3 + scoreData.getReportScore() * 0.4));
+                scoreItem.setScore(score);
+                scoreItemRepository.save(scoreItem);
+                if (score.getScoreItems() == null) {
+                    List<ScoreItem> items = new ArrayList<>();
+                    items.add(scoreItem);
+                    score.setScoreItems(items);
+                } else {
+                    score.getScoreItems().add(scoreItem);
+                }
+                scoreRepository.save(score);
+                //重新保存该学生的总成绩
+                score = scoreRepository.findById(score.getScoreId()).get();
+                List<ScoreItem> scoreItems = score.getScoreItems();
+                int count = scoreItems.size();
+                float pTotal = 0.0f, oTotal = 0.0f, rTotal = 0.0f;
+                for (ScoreItem scoreItem1 : scoreItems) {
+                    pTotal += scoreItem1.getPreviewScore();
+                    oTotal += scoreItem1.getOperatingScore();
+                    rTotal += scoreItem1.getReportScore();
+                }
+                score.setScoreValue((float) ((pTotal * 0.3 + oTotal * 0.3 + rTotal * 0.4) / count));
+                scoreRepository.save(score);
             }
-            scoreRepository.save(score);
-            //重新保存该学生的总成绩
-            score=scoreRepository.findById(score.getScoreId()).get();
-            List<ScoreItem> scoreItems=score.getScoreItems();
-            int count=scoreItems.size();
-            float pTotal=0.0f,oTotal=0.0f,rTotal=0.0f;
-            for(ScoreItem scoreItem1:scoreItems){
-                pTotal+=scoreItem1.getPreviewScore();
-                oTotal+=scoreItem1.getOperatingScore();
-                rTotal+=scoreItem1.getReportScore();
-            }
-            score.setScoreValue((float) ((pTotal*0.3+oTotal*0.3+rTotal*0.4)/count));
-            scoreRepository.save(score);
 
         }
-        return true;
+        return message;
     }
     //教师查询某次学生实验成绩
     public List<ScoreItem> findScoreItemsByCcIdAndExperienceName(int ccId,String experienceName){

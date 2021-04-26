@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.Data.MessageData;
 import com.example.demo.po.Course;
 import com.example.demo.po.CourseClass;
 import com.example.demo.po.Score;
@@ -73,12 +74,16 @@ public class CourseClassController {
     }
     //老师手动添加学生实验成绩（选择班级后）
     @RequestMapping(value = "/teacher/addingScoreManualByClass")
-    public String addingScoreManualByClass(@RequestParam("experimentName")String experimentName, @RequestParam("ccNumber")String ccNumber,@RequestParam("date")String date, @RequestParam("scoreId")int[] scoreId,
+    public String addingScoreManualByClass(@RequestParam("experimentName")String experimentName, @RequestParam("ccId")String ccId,@RequestParam("date")String date, @RequestParam("scoreId")int[] scoreId,
                                            @RequestParam("previewScore")float[] previewScore, @RequestParam("operatingScore")float[] operatingScore,
                                            @RequestParam("reportScore")float[] reportScore,@RequestParam("remark")String[] remark, RedirectAttributes attributes) throws ParseException {
         scoreItemService.addScoreItem( experimentName, date,scoreId, previewScore,operatingScore, reportScore,remark) ;
         attributes.addAttribute("experienceName",experimentName);
-        attributes.addAttribute("ccNumber",ccNumber);
+        attributes.addAttribute("ccId",ccId);
+        //存储是否存入数据库的信息
+        MessageData messageData=new MessageData();
+        messageData.setMsg("存入成功");
+        attributes.addAttribute("message",messageData.getMsg());
         return "redirect:/teacher/findStudentScoreItemByName";
     }
     //查看某课程班级信息

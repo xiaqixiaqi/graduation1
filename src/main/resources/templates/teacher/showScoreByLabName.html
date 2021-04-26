@@ -195,7 +195,9 @@
 							</a>
 						</div>
 					</div>
-					<div class="panel-body">
+					<font color="red" th:if="${message!=null}">[[${message}]]</font>
+					<div th:if="${scoreItems!=null&&scoreItems.size()!=0}">
+					<div class="panel-body" >
 
 						<script type="text/javascript">
 							jQuery(document).ready(function($)
@@ -221,7 +223,7 @@
 							</tr>
 							</thead>
 
-							<tbody th:if="${scoreItems!=null}">
+							<tbody>
 							<tr th:each="scoreItem:${scoreItems}">
 								<td th:utext="${scoreItem.score.student.studentID}"></td>
 								<td th:utext="${scoreItem.score.student.name}"></td>
@@ -236,6 +238,7 @@
 						</table>
 
 					</div>
+				</div>
 				</div>
 
 			<footer class="main-footer sticky footer-type-1">
