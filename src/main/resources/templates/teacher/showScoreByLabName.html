@@ -216,6 +216,7 @@
 								<th>课前预习成绩</th>
 								<th>实验操作成绩</th>
 								<th>实验报告成绩</th>
+								<th>总成绩</th>
 								<th>备注</th>
 							</tr>
 							</thead>
@@ -227,6 +228,9 @@
 								<td th:utext="${scoreItem.previewScore}"></td>
 								<td th:utext="${scoreItem.operatingScore}"></td>
 								<td th:utext="${scoreItem.reportScore}"></td>
+								<td th:utext="${scoreItem.totalScore}"></td>
+								<td th:utext="${scoreItem.remark}"></td>
+
 							</tr>
 							</tbody>
 						</table>
