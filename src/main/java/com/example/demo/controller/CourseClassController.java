@@ -44,32 +44,17 @@ public class CourseClassController {
     //老师手动添加学生实验成绩
     @RequestMapping(value = "/teacher/addScoreManual")
     public ModelAndView addScoreManual(HttpSession session){
-        ModelAndView modelAndView=new ModelAndView();
+        ModelAndView modelAndView = getModelAndView(session);
         modelAndView.setViewName("/teacher/addStudentScoreManual.html");
-        //需要修改，老师id，老师的所有课程班级
-        int tId=(Integer) session.getAttribute("tId");
-        if (tId==1){
-            modelAndView.addObject("courseClasses",courseClassService.findAllCourseClass());
-        }
-        else
-            modelAndView.addObject("courseClasses",courseClassService.findAllCourseClassByTId(tId));
         return modelAndView;
 
     }
     //老师手动添加学生实验成绩（选择班级后）
     @RequestMapping(value = "/teacher/addScoreManualByClass")
     public ModelAndView addScoreManualByClass(@RequestParam("ccId")int ccId,HttpSession session){
-        ModelAndView modelAndView=new ModelAndView();
+        ModelAndView modelAndView = getModelAndView(session);
         modelAndView.setViewName("/teacher/addStudentScoreManual.html");
         modelAndView.addObject("scores",courseClassService.findScoresByCourseClass(ccId));
-        //老师的所有课程班级
-        int tId=(Integer) session.getAttribute("tId");
-        if (tId==1){
-            modelAndView.addObject("courseClasses",courseClassService.findAllCourseClass());
-        }
-        else
-            modelAndView.addObject("courseClasses",courseClassService.findAllCourseClassByTId(tId));
-
         return modelAndView;
     }
     //老师手动添加学生实验成绩（选择班级后）
@@ -89,20 +74,29 @@ public class CourseClassController {
     //查看某课程班级信息
     @RequestMapping(value = "/teacher/showCourseClassInfo")
     public ModelAndView showCourseClass(HttpSession session){
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/teacher/showResearchStudentByClass.html");
-        modelAndView.addObject("courseClasses",courseClassService.findAllCourseClassByTId((Integer) session.getAttribute("tId")));
+        ModelAndView modelAndView = getModelAndView(session);
         return modelAndView;
     }
     //查询某课程班级信息（搜索后）
     @RequestMapping(value = "/teacher/showCourseClassByResearch")
     public ModelAndView showCourseClassByResearch(@RequestParam("ccId")int ccId,HttpSession session){
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("/teacher/showResearchStudentByClass.html");
-        modelAndView.addObject("courseClasses",courseClassService.findAllCourseClassByTId((Integer) session.getAttribute("tId")));
+        ModelAndView modelAndView = getModelAndView(session);
         modelAndView.addObject("courseClass",courseClassService.findCourseClassByCcId(ccId));
         return modelAndView;
     }
+
+    private ModelAndView getModelAndView(HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView();
+        int tId = (int) session.getAttribute("tId");
+        if (tId == 1) {
+            modelAndView.addObject("courseClasses", courseClassService.findAllCourseClass());
+        } else {
+            modelAndView.addObject("courseClasses", courseClassService.findAllCourseClassByTId(tId));
+        }
+        modelAndView.setViewName("/teacher/showResearchStudentByClass.html");
+        return modelAndView;
+    }
+
     //学生端查询课程班级的信息
     @RequestMapping(value = "/student/showAllCourseClass")
     public ModelAndView researcheCourseClass(HttpSession session){

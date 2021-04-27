@@ -41,6 +41,7 @@ public class ScoreItemService {
                 scoreItem.setExperimentName(experienceName);
                 scoreItem.setPreviewScore(scoreData.getPreviewScore());
                 scoreItem.setReportScore(scoreData.getReportScore());
+                scoreItem.setRemark(scoreData.getTip());//添加成绩条的评价
                 //记录这次实验的总成绩
                 scoreItem.setTotalScore((float) (scoreData.getOperatingScore() * 0.3 + scoreData.getPreviewScore() * 0.3 + scoreData.getReportScore() * 0.4));
                 scoreItem.setScore(score);
