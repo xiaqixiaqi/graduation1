@@ -111,9 +111,9 @@
 
             //校验密码
             function valPwd() {
-                var p = /^\d\d{5}$/;//6位数字
-                var r = p.test(iptPwd.value);//校验
-                if (!r) {
+                //var p = /^\d\d{5}$/;//6位数字
+                //var r = p.test(iptPwd.value);//校验
+                if (iptPwd.value=='') {
                     tipPwd.style.display = 'inline-block';
                     iptPwd.focus();//获取焦点
                     return false;

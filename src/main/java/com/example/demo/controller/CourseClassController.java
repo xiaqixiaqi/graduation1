@@ -28,9 +28,13 @@ public class CourseClassController {
     private TeacherService teacherServic;
     @Resource
     private ScoreItemService scoreItemService;
+    //管理员添加课程班级页面
     @RequestMapping(value = "/teacher/addCourseClass")
-    public String addCourseClass(){
-        return "/teacher/addCourseClass.html";
+    public ModelAndView addCourseClass(){
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("/teacher/addCourseClass.html");
+        modelAndView.addObject("courses",courseService.findAllCourse());
+        return modelAndView;
     }
     @RequestMapping(value = "/teacher/addingCourseClass")
     public String addingCourseClass(@RequestParam("ccNumber")String ccNumber,@RequestParam("jobNumber")String jobNumber, @RequestParam("courseCode")String courseCode,

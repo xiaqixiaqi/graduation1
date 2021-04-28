@@ -5,6 +5,7 @@ import com.example.demo.po.Course;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class CourseService {
@@ -24,5 +25,8 @@ public class CourseService {
     }
     public Course findCourseByCourseCode(String courseCode){
         return courseRepository.findCourseByCourseCode(courseCode);
+    }
+    public List<Course> findAllCourse(){
+        return (List<Course>) courseRepository.findAll();
     }
 }
