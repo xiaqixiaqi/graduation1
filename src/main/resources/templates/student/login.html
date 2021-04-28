@@ -3,7 +3,7 @@
     <base href="<%=basePath%>">
 
     <title>登录</title>
-
+    <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="cache-control" content="no-cache">
     <meta http-equiv="expires" content="0">
@@ -14,6 +14,11 @@
     -->
 
     <link rel="stylesheet" href="/assets/css/bootstrap.css">
+
+    <link rel="stylesheet" href="/assets/css/xenon-forms.css">
+
+
+    <script src="/assets/js/jquery-1.11.1.min.js"></script>
     <style type="text/css">
         #left {
             float: left;
@@ -36,6 +41,8 @@
             align-items: center;
             justify-content: center;
         }
+
+        span{color: red;font-size: 12px;display: none;}
     </style>
 
 </head>
@@ -48,7 +55,7 @@
 <div id="right">
     <div id="rgihttop"></div>
     <div id="rightbottom">
-        <form action="/logining" method="post">
+        <form action="/logining" method="post" onsubmit="return valForm()">
             <div class="">
                 <h1>
                     <font color="#696969">学生实验成绩管理系统</font>
@@ -57,15 +64,16 @@
             <br><br>
             <div class="form-group">
                 <label>用户名</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                       placeholder="Username" name="account">
+                <input type="text" class="form-control" id="txt-name"
+                       placeholder="Username" name="account"><span id="tip-name">账号不能为空</span>
             </div>
 
             <div class="form-group">
                 <label>密码</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"
-                       name="password">
+                <input type="password" class="form-control" id="pwd" placeholder="Password"
+                       name="password"><span id="tip-pwd">密码必须为6位数字</span><br>
             </div>
+
             <div class="form-group">
                 <input type="radio" name="role" value="0" checked>学生
                 <input type="radio" name="role" value="1">老师
@@ -74,6 +82,47 @@
             <button type="submit" class="btn btn-primary">Submit</button><br><br>
 
         </form>
+        <script type="text/javascript">
+            //校验用户名密码是否合法
+            var iptName=document.getElementById('txt-name');
+            var iptPwd=document.getElementById('pwd');
+            var tipName=document.getElementById('tip-name');
+            var tipPwd=document.getElementById('tip-pwd');
+
+            //对用户名和密码进行校验
+            function valForm(){
+                return valUserName()&&valPwd()&&f111();
+            }
+
+            //校验用户名
+            function valUserName() {
+               // var p=/^\w\w{7,11}$/;//用户名必须为8-12为字母或数字
+               // var r=p.test(iptName.value);//校验
+                if(iptName.value==''){
+                    //校验不通过
+                    tipName.style.display='inline-block';//显示
+                    iptName.focus();
+                    return false;
+                }else{
+                    tipName.style.display='none';
+                }
+                return true;
+            }
+
+            //校验密码
+            function valPwd() {
+                var p = /^\d\d{5}$/;//6位数字
+                var r = p.test(iptPwd.value);//校验
+                if (!r) {
+                    tipPwd.style.display = 'inline-block';
+                    iptPwd.focus();//获取焦点
+                    return false;
+                } else {
+                    tipPwd.style.display = 'none';
+                }
+                return true;
+            }
+        </script>
     </div>
 </div>
 <script src="/jquery-3.5.1/jquery-3.5.1.js"></script>
